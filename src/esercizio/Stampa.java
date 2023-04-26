@@ -3,47 +3,47 @@ package esercizio;
 import java.util.Formatter;
 
 public class Stampa extends Thread{
-	
-	private Buffer buffer;
-	
-	public Stampa(Buffer buffer) {
+
+    private Buffer buffer;
+
+    public Stampa(Buffer buffer) {
         this.buffer = buffer;
     }
-	
-	@Override
-	public void run(){
-		
-		try {
-			stampa();
-		} catch (Exception e) {
-			
-			e.printStackTrace();
-		}
-		
-	}
-	
-	public void stampa() throws Exception {
+
+    @Override
+    public void run(){
+
+        try {
+            stampa();
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+
+    }
+
+    public void stampa() throws Exception {
 
         for (int k = 0; k < buffer.getN_mesi(); k++) {
             buffer.setK(k);
 
-            Thread t1 = new CalcoloRata(buffer);
+            Thread t1 = new CalcolaRata(buffer);
             Thread t2 = new CalcoloCapitaleMensile(buffer);
             Thread t3 = new CalcoloInteresseMensile(buffer);
             Thread t5 = new CalcoloCapitaleResiduo(buffer);
 
-            t1.start();
-            t1.join();
-            t2.start();
-            t3.start();
-            t2.join();
-            t3.join();
             t5.start();
             t5.join();
+            t3.start();
+            t3.join();
+            t1.start();
+            t1.join();
+
+            buffer.setCapitale(buffer.getCapitale() - buffer.getCapitaleMensile());
         }
         
         for (int k = 0; k < buffer.getN_mesi(); k++) {
-        	buffer.setK(k);
+            buffer.setK(k);
 
             Thread t4 = new CalcoloInteresseResiduo(buffer);
             t4.start();
@@ -66,27 +66,27 @@ public class Stampa extends Thread{
                     "",
                     buffer.getInteresseMensile()[k],
                     "",
-                    buffer.getCapitaleMensile()[k],
+                    buffer.getCapitaleMensile(),
                     "",
                     buffer.getInteresseResiduo()[k],
                     "",
-                    buffer.getCapitaleResiduo()[k]);
-            
+                    k == (buffer.getN_mesi()-1) ? buffer.getCapitaleResiduo()[k] : buffer.getCapitaleResiduo()[k + 1]);
+
             tot += buffer.getRate()[k];
             tot_qta_interessi += buffer.getInteresseMensile()[k];
-            tot_qta_cap += buffer.getCapitaleMensile()[k];
+            tot_qta_cap += buffer.getCapitaleMensile();
             
             int anni = k / 12; 
             if ((k+1) % 12 == 0) {
-            	formatter.format("Tot %-1d° anno: %-1s € %-9.2f %-1s € %-9.2f %-3s € %-9.2f\n\n", 
-            			(anni+1),
-            			"",
-            			tot,
-            			"",
-            			tot_qta_interessi,
-            			"",
-            			tot_qta_cap
-            			);
+                formatter.format("Tot %-1d° anno: %-1s € %-9.2f %-1s € %-9.2f %-3s € %-9.2f\n\n",
+                        (anni+1),
+                        "",
+                        tot,
+                        "",
+                        tot_qta_interessi,
+                        "",
+                        tot_qta_cap
+                );
             tot = 0;
             tot_qta_interessi = 0;
             tot_qta_cap = 0;
@@ -95,6 +95,6 @@ public class Stampa extends Thread{
 
         System.out.println(formatter);
         formatter.close();
-	}
+    }
 
 }

@@ -5,6 +5,7 @@ class Buffer {
     private double interesse;
     private int n_anni;
     private int n_mesi;
+	private double capitaleMensile;
     protected int k = 0;
 
     public Buffer(double c, double i, int n) {
@@ -12,17 +13,15 @@ class Buffer {
         this.interesse = i / 100;
         this.n_anni = n;
         this.n_mesi = (n * 12);
-        
-        
+
+		this.capitaleMensile = c / n_mesi;
         rate = new double[n_mesi];
-        capitaleMensile = new double[n_mesi];
         interesseMensile = new double[n_mesi];
         interesseResiduo = new double[n_mesi];
         capitaleResiduo = new double[n_mesi];
     }
     
     private double[] rate;
-    private double[] capitaleMensile;
     private double[] interesseMensile;
     private double[] interesseResiduo;
     private double[] capitaleResiduo;
@@ -67,11 +66,11 @@ class Buffer {
 		this.rate = rate;
 	}
 	
-	public double[] getCapitaleMensile() {
+	public double getCapitaleMensile() {
 		return capitaleMensile;
 	}
 	
-	public void setCapitaleMensile(double[] capitaleMensile) {
+	public void setCapitaleMensile(double capitaleMensile) {
 		this.capitaleMensile = capitaleMensile;
 	}
 	
