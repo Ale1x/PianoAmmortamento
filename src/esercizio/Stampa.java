@@ -29,7 +29,6 @@ public class Stampa extends Thread{
             buffer.setK(k);
 
             Thread t1 = new CalcolaRata(buffer);
-            Thread t2 = new CalcoloCapitaleMensile(buffer);
             Thread t3 = new CalcoloInteresseMensile(buffer);
             Thread t5 = new CalcoloCapitaleResiduo(buffer);
 
