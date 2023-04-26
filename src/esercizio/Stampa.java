@@ -1,6 +1,7 @@
 package esercizio;
 
 import java.util.Formatter;
+import java.text.NumberFormat;
 
 public class Stampa extends Thread{
 
@@ -41,7 +42,8 @@ public class Stampa extends Thread{
 
             buffer.setCapitale(buffer.getCapitale() - buffer.getCapitaleMensile());
         }
-        
+
+
         for (int k = 0; k < buffer.getN_mesi(); k++) {
             buffer.setK(k);
 
@@ -57,20 +59,24 @@ public class Stampa extends Thread{
         double tot = 0;
         double tot_qta_interessi = 0;
         double tot_qta_cap = 0;
-        
+
+        NumberFormat nf = NumberFormat.getInstance();
+        nf.setMaximumFractionDigits(2);
+        nf.setMinimumFractionDigits(2);
+
         for (int k = 0; k < buffer.getN_mesi(); k++) {
-            formatter.format("rata n. %-3d %-2s € %-9.2f %-1s € %-9.2f %-3s € %-9.2f %-4s € %-9.2f %-8s € %-9.2f\n",
+            formatter.format("rata n. %-3d %-2s € %-11s %-1s € %-11s %-3s € %-11s %-4s € %-11s %-8s € %-11s\n",
                     k + 1,
                     "",
-                    buffer.getRate()[k],
+                    nf.format(buffer.getRate()[k]),
                     "",
-                    buffer.getInteresseMensile()[k],
+                    nf.format(buffer.getInteresseMensile()[k]),
                     "",
-                    buffer.getCapitaleMensile(),
+                    nf.format(buffer.getCapitaleMensile()),
                     "",
-                    buffer.getInteresseResiduo()[k],
+                    nf.format(buffer.getInteresseResiduo()[k]),
                     "",
-                    k == (buffer.getN_mesi()-1) ? buffer.getCapitaleResiduo()[k] : buffer.getCapitaleResiduo()[k + 1]);
+                    nf.format(k == (buffer.getN_mesi() - 1) ? buffer.getCapitaleResiduo()[k] : buffer.getCapitaleResiduo()[k + 1]));
 
             tot += buffer.getRate()[k];
             tot_qta_interessi += buffer.getInteresseMensile()[k];
